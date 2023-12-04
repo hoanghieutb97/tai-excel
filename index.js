@@ -63,7 +63,7 @@ async function downloadImage(link, name, downloadDirectory) {
                 oAuth2Client.setCredentials(token);
                 // Store the token to disk for later program executions
                 fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-                    if (err) return console.error(err);
+                    if (err) return console.error("line 66",err);
                     // console.log('Token stored to', TOKEN_PATH);
                 });
                 callback(oAuth2Client);
