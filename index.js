@@ -9,7 +9,7 @@ const path = require('path');
 const _ = require('lodash');
 
 const excelFileName = 'file.xlsx';
-const DefaultLink = '//192.168.1.240/design/A Design';
+const DefaultLink = '//192.168.1.194/design';
 const express = require('express');
 const multer = require('multer');
 const app = express();
