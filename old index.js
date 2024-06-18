@@ -84,8 +84,8 @@ async function readExcelAndDownloadImages(GLLM, sheet, NameFolder) {
             if (sccccc[0].amountFile === "1") {
 
                 // Kiểm tra xem tệp có tồn tại trong thư mục máy chủ không
-                const imagePath = path.join('//192.168.1.230/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name}.png`);
-                const imagePath2 = path.join('//192.168.1.230/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name}.jpg`);
+                const imagePath = path.join('//192.168.1.232/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name}.png`);
+                const imagePath2 = path.join('//192.168.1.232/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name}.jpg`);
 
                 let linkSplit;
                 if (typeof (link) !== "object")
@@ -122,8 +122,8 @@ async function readExcelAndDownloadImages(GLLM, sheet, NameFolder) {
                     linkSplit = link.replace(/www\.dropbox\.com/g, 'dl.dropboxusercontent.com').split(";");
                 else linkSplit = link.text.replace(/www\.dropbox\.com/g, 'dl.dropboxusercontent.com').split(";");
 
-                const imagePathF = path.join('//192.168.1.230/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name} front.png`);
-                const imagePathB = path.join('//192.168.1.230/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name} back.png`);
+                const imagePathF = path.join('//192.168.1.232/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name} front.png`);
+                const imagePathB = path.join('//192.168.1.232/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name} back.png`);
                 if (fs.existsSync(imagePathF)) {
                     const fileStream = fs.createReadStream(imagePathF);
                     fileStream.pipe(fs.createWriteStream(path.join(downloadDirectory, `${name} front.png`)));

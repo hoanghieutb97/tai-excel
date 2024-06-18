@@ -63,7 +63,7 @@ async function downloadImage(link, name, downloadDirectory) {
                 oAuth2Client.setCredentials(token);
                 // Store the token to disk for later program executions
                 fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-                    if (err) return console.error("line 66",err);
+                    if (err) return console.error("line 66", err);
                     // console.log('Token stored to', TOKEN_PATH);
                 });
                 callback(oAuth2Client);
@@ -154,7 +154,7 @@ async function downloadImage(link, name, downloadDirectory) {
             const imagePath = path.join(downloadDirectory, imageName);
 
             const writer = fs.createWriteStream(imagePath);
-            response.data.pipe(writer);
+             response.data.pipe(writer);
 
             await new Promise((resolve, reject) => {
                 writer.on('finish', resolve);
@@ -193,7 +193,7 @@ async function readExcelAndDownloadImages(GLLM, sheet, NameFolder) {
             const product = row.getCell('F').value; // Lấy giá trị từ cột// product
             const variant = row.getCell('E').value; // Lấy giá trị từ cột// variant
             var ThoiGian = row.getCell('J').value; // ngay
-            
+
             let sccccc = GLLM.filter(itemGllm => _.intersection(itemGllm.ProductType, [product.toLowerCase().trim().replace(/ /g, '')]).length !== 0)
                 .filter(itemx => _.intersection(itemx.variant, [variant.toLowerCase().trim().replace(/ /g, '')]).length !== 0)
 
@@ -203,8 +203,8 @@ async function readExcelAndDownloadImages(GLLM, sheet, NameFolder) {
             if (sccccc[0].amountFile === "1") {
 
                 // Kiểm tra xem tệp có tồn tại trong thư mục máy chủ không
-                const imagePath = path.join('//192.168.1.230/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name}.png`);
-                const imagePath2 = path.join('//192.168.1.230/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name}.jpg`);
+                const imagePath = path.join('//192.168.1.232/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name}.png`);
+                const imagePath2 = path.join('//192.168.1.232/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name}.jpg`);
 
                 let linkSplit;
                 if (typeof (link) !== "object")
@@ -241,8 +241,8 @@ async function readExcelAndDownloadImages(GLLM, sheet, NameFolder) {
                     linkSplit = link.replace(/www\.dropbox\.com/g, 'dl.dropboxusercontent.com').split(";");
                 else linkSplit = link.text.replace(/www\.dropbox\.com/g, 'dl.dropboxusercontent.com').split(";");
 
-                const imagePathF = path.join('//192.168.1.230/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name} front.png`);
-                const imagePathB = path.join('//192.168.1.230/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name} back.png`);
+                const imagePathF = path.join('//192.168.1.232/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name} front.png`);
+                const imagePathB = path.join('//192.168.1.232/production', ThoiGian[0], ThoiGian[1], ThoiGian[2], product, `${name} back.png`);
                 if (fs.existsSync(imagePathF)) {
                     const fileStream = fs.createReadStream(imagePathF);
                     fileStream.pipe(fs.createWriteStream(path.join(downloadDirectory, `${name} front.png`)));
@@ -288,18 +288,20 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         await workbook.xlsx.readFile(req.file.path);
 
         const worksheet = workbook.getWorksheet(1);
-        
+
 
         // const url = "https://sheetdb.io/api/v1/mobao5qvh19ze";
-        const url = 'https://sheet.best/api/sheets/0c6ecbff-1ea5-4717-998c-546dd52034cb';
+        const url = 'https://sheet.best/api/sheets/e8876c80-1778-414d-ae68-af6b9ec1289c';
         const response = await axios.get(url);
-        const GLLM = response.data.map(item => {
+        var GLLM = response.data.filter(item => item.width !== null)
+        
+        GLLM = GLLM.map(item => {
             let item2 = item;
             item2.ProductType = item2.ProductType.toLowerCase().trim().replace(/ /g, '').split(",");
             item2.variant = item2.variant.toLowerCase().trim().replace(/ /g, '').split(",");
             return item2;
         });
-
+        
         // Xử lý tải ảnh và đợi cho đến khi tất cả hoàn thành
         await readExcelAndDownloadImages(GLLM, worksheet, NameFolder);
 
